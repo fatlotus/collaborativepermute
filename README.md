@@ -8,6 +8,27 @@ required is dramatically reduced.
 
 [1]: http://ttic.uchicago.edu/~nati/Publications/WangSrebroEvans2014.pdf
 
+## Example
+
+Suppose we have three people and five movies, and we wish to recover which
+movies are preferred by each person. Suppose also that we can only ask
+five questions of these people, but that we decide which person to ask next.
+
+To do that, run the following:
+
+```go
+eng := collaborativepermute.NewEngine(3, 5)
+
+for i := 0; i < 5; i++ {
+	q := eng.Generate(-1)
+	// display q to user, update order of q.Choices
+	q.Respond(q)
+}
+```
+
+If you cannot decide when each user is prompted (such as for an online form),
+pass the current user's ID to `.Generate` to restrict the queries generated.
+
 ## License
 
 The code in this repository is covered under the MIT License:

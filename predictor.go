@@ -1,12 +1,21 @@
 // Package collaborativepermute implements an online collaborative permutation
 // learner.
+// 
+// In many machine learning problems, we seek to learn how much various people
+// prefer a varied set of objects. Using the accelerated Trace norm prediction
+// algorithm from (Wang KDD '14), we can both generate directed queries and
+// form predictions based on those queries. As a result, the number of questions
+// required is dramatically reduced.
 //
-// Examples
+// Example
 //
-// Suppose you are able to query people on demand. In that case, pass -1 to
-// Generate and the algorithm will decide for you which person to query.
+// Suppose we have three people and five movies, and we wish to recover which
+// movies are preferred by each person. Suppose also that we can only ask
+// five questions of these people, but that we decide which person to ask next.
 //
-// 	eng := collaborativepermute.NewEngine(3, 5) // three people, five things
+// To do that, run the following:
+//
+// 	eng := collaborativepermute.NewEngine(3, 5)
 // 	
 // 	for i := 0; i < 5; i++ {
 // 		q := eng.Generate(-1)
@@ -14,8 +23,8 @@
 // 		q.Respond(q)
 // 	}
 //
-// If instead you can only ask people questions in sequence, pass the given 
-// user ID to Generate.
+// If you cannot decide when each user is prompted (such as for an online form),
+// pass the current user's ID to .Generate to restrict the queries generated.
 package collaborativepermute
 
 import (
