@@ -23,6 +23,7 @@
 // 		q.Respond(q)
 // 	}
 //
+// Currently, the implementation will only ever ask about two items at a time.
 // If you cannot decide when each user is prompted (such as for an online form),
 // pass the current user's ID to .Generate to restrict the queries generated.
 package collaborativepermute
