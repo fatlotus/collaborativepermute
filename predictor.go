@@ -88,8 +88,8 @@ func (p *Engine) gradientLoss(samps []Query) gauss.Array {
 func (p *Engine) update(samps []Query) {
 	alphaP := (1 + math.Sqrt(1 + 4*p.Alpha*p.Alpha)) / 2
 
-	U, S, V := gauss.SVD(gauss.Sum(p.Z, gauss.Scale(
-		p.gradientLoss(samps), -p.Nu)))
+	U, S, V := gauss.SVD(gauss.Sum(p.Z,
+		p.gradientLoss(samps).Scale(-p.Nu)))
 	for i := range S.Data {
 		S.Data[i] = math.Max(0, S.Data[i] - p.Lambda)
 	}
@@ -97,8 +97,7 @@ func (p *Engine) update(samps []Query) {
 	p.Xp = p.X
 	p.X = gauss.Product(gauss.Product(U, gauss.Diagonal(S.Data)), V.Transpose())
 	p.Z = gauss.Sum(p.X, 
-		gauss.Scale(
-			gauss.Sum(p.X, gauss.Scale(p.Xp, -1)), ((p.Alpha - 1) / (alphaP))))
+		gauss.Sum(p.X, p.Xp.Scale(-1)).Scale((p.Alpha - 1) / alphaP))
 	p.Alpha = alphaP
 }
 
